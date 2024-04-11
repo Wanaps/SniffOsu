@@ -1,0 +1,23 @@
+<DOCTYPE html>
+
+<html>
+    <head>
+        <title>Best Beatmap</title>
+    </head>
+    <body>
+        {% if not beatmap %}
+        <h2>Get best scores on a Beatmap</h2>
+        <form method="post">
+            {% csrf_token %}
+            <label for="beatmapid">Beatmap ID:</label><br>
+            <input type="text" id="beatmapid" name="beatmapid"><br>
+            <input type="submit" value="Submit">
+        </form>
+        {% elif beatmap and scores %}
+        <p style="background-image: url('https://assets.ppy.sh/beatmaps/853600/covers/cover.jpg);">
+        <h2>Best scores on {{ beatmap.title }} by {{ beatmap.artist }}</h2>
+        {% for score in scores %}
+        <h3>{{ score.username }} - {{ score.pp }}pp - {{ score.score }}</h3>
+        {% endfor%}
+        {% endif %}
+    </body>
