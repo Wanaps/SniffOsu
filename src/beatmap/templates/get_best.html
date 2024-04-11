@@ -14,10 +14,11 @@
             <input type="submit" value="Submit">
         </form>
         {% elif beatmap and scores %}
-        <p style="background-image: url('https://assets.ppy.sh/beatmaps/853600/covers/cover.jpg);">
+        <button onclick="window.location.href = '/beatmap/get_best';">Back</button>
+        <img src="https://assets.ppy.sh/beatmaps/{{beatmap.beatmapset_id}}/covers/cover.jpg" alt="Beatmap cover">
         <h2>Best scores on {{ beatmap.title }} by {{ beatmap.artist }}</h2>
         {% for score in scores %}
-        <h3>{{ score.username }} - {{ score.pp }}pp - {{ score.score }}</h3>
+        <h3>{{ forloop.counter }}. {{ score.username }} - {{ score.pp }}pp - {{ score.score }}</h3>
         {% endfor%}
         {% endif %}
     </body>
