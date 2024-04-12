@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Template</title>
+</head>
+<body>
+    <h1>Last ranked Beatmaps</h1>
+    {% if beatmaps %}
+        <ul>
+            {% for beatmap in beatmaps %}
+                <li>{{ forloop.counter }}. <b>{{ beatmap.title }}</b> by <b>{{ beatmap.artist }}</b></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No beatmaps found</p>
+    {% endif %}
+    <button onclick="window.location.href = '/beatmap/get_best';">Get Best</button>
+    <button onclick="window.location.href = '/beatmap/get_recent';">Get Recent</button>
+    <button onclick="window.location.href = '/beatmap/get_best_from';">Get User Best</button>
+    
+</body>
+</html>

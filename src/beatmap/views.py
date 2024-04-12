@@ -7,9 +7,9 @@ from .env import APIKEY, SINCEDATE
 def index(request):
     beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
     beatmaps = beatmaps.json()
+    beatmaps.reverse()
     beatmapsets = {}
     beatmaplist = []
-    beatmaps.reverse()
     for beatmap in beatmaps:
         beatmapset_id = beatmap['beatmapset_id']
         if beatmapset_id not in beatmapsets and len(beatmaplist) < 15:
