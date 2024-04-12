@@ -4,7 +4,7 @@ import player.env as env
 from player.env import API_KEY
 from player.user import get_user
 import requests
-
+import asyncio
 # Create your views here.
 
 compare_dic = {
@@ -79,3 +79,19 @@ def compare(request, username, username2):
             compare_dic[key] = round(data_user2[key] - data_user[key], 2)
             compare_dic['better_' + key] = data_user2['username']
     return render(request, 'compare.html', {"compare_dic":compare_dic})
+
+
+def get_user(request, username: str):
+    get_user_response = requests.get(f'https://osu.ppy.sh/api/get_user?k={API_KEY}&u={username}')
+    gur_response = get_user_response.json()
+    if not gur_response:
+        return None
+    get_user_best_response = requests.get(f'https://osu.ppy.sh/api/get_user_best?k={API_KEY}&u={username}&limit=5')
+    gubr_response = get_user_best_response.json()
+    if not gubr_response:
+        return None
+    get_user_recent_response = requests.get(f'https://osu.ppy.sh/api/get_user_recent?k={API_KEY}&u={username}&limit=5')
+    gur_response = get_user_recent_response.json()
+    if not gur_response:
+        return None
+    return render (request, 'profile.html', {"profile":gur_response[0], "best":gubr_response, "recent":gur_response})

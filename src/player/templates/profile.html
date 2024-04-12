@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <p>Welcome to your profile page!</p>
+    {% for key, value in profile.items %}
+        <h3>{{ key }}: {{ value }}</h3>
+    {% endfor %}
+    <h2>Best</h2>
+    {% for map in best%}
+        {% for key, value in map.items %}
+            <h3>{{ key }}: {{ value }}</h3>
+        {% endfor %}
+    {% endfor %}
+    <h2>Recent</h2>
+    {% for map in recent %}
+        {% for key, value in map.items %}
+            <h3>{{ key }}: {{ value }}</h3>
+        {% endfor %}
+    {% endfor %}
+</body>
+</html>
