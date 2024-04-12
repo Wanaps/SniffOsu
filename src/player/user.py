@@ -1,4 +1,4 @@
-from env import API_KEY
+from player.env import API_KEY
 import requests
 
 
@@ -7,7 +7,7 @@ def get_user(username: str):
     data = response.json()
     if not data:
         return None
-    return data
+    return data[0]
 
 
 def get_user_id(username: str):
@@ -22,7 +22,7 @@ def get_user_best(username: str, limit: int = 3):
     data = response.json()
     if not data:
         return None
-    return data
+    return data[0]
 
 
 def get_user_recent(username, limit: int = 3):
@@ -30,8 +30,4 @@ def get_user_recent(username, limit: int = 3):
     data = response.json()
     if not data:
         return None
-    return data
-
-
-
-print(get_user('lifeline'))
+    return data[0]

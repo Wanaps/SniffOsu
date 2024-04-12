@@ -1,9 +1,13 @@
-from env import API_KEY
-from user import get_user
+from django.shortcuts import render
+from django.http import HttpResponse
+import player.env as env
+from player.env import API_KEY
+from player.user import get_user
 import requests
 
+# Create your views here.
 
-compare = {
+compare_dic = {
     "count300": 0,
     "better_count300": "",
     "count100": 0,
@@ -34,10 +38,15 @@ compare = {
     "better_pp_country_rank": ""
     }
 
+def index(request):
+    return render(request, 'index.html')
 
-def compare_user(username: str, username_user2: str):
+def compare_form(request):
+    return HttpResponse("Hello, world. You're at the COMPARE index.")
+
+def compare(request, username, username2):
     data_user = get_user(username)[0]
-    data_user2 = get_user(username_user2)[0]
+    data_user2 = get_user(username2)[0]
     keys_int = ['count300', 'count100', 'count50', 'playcount', 'ranked_score', 'total_score', 'pp_rank',
             'count_rank_ss', 'count_rank_s', 'count_rank_a', 'pp_country_rank']
     rank_keys = ['pp_rank', 'pp_country_rank']
@@ -46,30 +55,27 @@ def compare_user(username: str, username_user2: str):
         data_user[key] = int(data_user[key])
         data_user2[key] = int(data_user2[key])
         if data_user[key] > data_user2[key]:
-            compare[key] = data_user[key] - data_user2[key]
-            compare['better_' + key] = data_user['username']
+            compare_dic[key] = data_user[key] - data_user2[key]
+            compare_dic['better_' + key] = data_user['username']
         else:
-            compare[key] = data_user2[key] - data_user[key]
-            compare['better_' + key] = data_user2['username']
+            compare_dic[key] = data_user2[key] - data_user[key]
+            compare_dic['better_' + key] = data_user2['username']
     for key in rank_keys:
         data_user[key] = int(data_user[key])
         data_user2[key] = int(data_user2[key])
         if data_user[key] < data_user2[key]:
-            compare[key] = data_user[key]
-            compare['better_' + key] = data_user['username']
+            compare_dic[key] = data_user[key]
+            compare_dic['better_' + key] = data_user['username']
         else:
-            compare[key] = data_user2[key]
-            compare['better_' + key] = data_user2['username']
+            compare_dic[key] = data_user2[key]
+            compare_dic['better_' + key] = data_user2['username']
     for key in keys_float:
         data_user[key] = float(data_user[key])
         data_user2[key] = float(data_user2[key])
         if data_user[key] > data_user2[key]:
-            compare[key] = round(data_user[key] - data_user2[key], 2)
-            compare['better_' + key] = data_user['username']
+            compare_dic[key] = round(data_user[key] - data_user2[key], 2)
+            compare_dic['better_' + key] = data_user['username']
         else:
-            compare[key] = round(data_user2[key] - data_user[key], 2)
-            compare['better_' + key] = data_user2['username']
-    print(compare)
-
-
-compare_user('guervus', 'wanaps')
+            compare_dic[key] = round(data_user2[key] - data_user[key], 2)
+            compare_dic['better_' + key] = data_user2['username']
+    return render(request, 'compare.html', {"compare_dic":compare_dic})
