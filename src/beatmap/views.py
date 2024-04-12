@@ -2,9 +2,21 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 
 import requests
+from .env import APIKEY, SINCEDATE
 
 def index(request):
-    return HttpResponse("Beatmap index.")
+    beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
+    beatmaps = beatmaps.json()
+    beatmapsets = {}
+    beatmaplist = []
+    beatmaps.reverse()
+    for beatmap in beatmaps:
+        beatmapset_id = beatmap['beatmapset_id']
+        if beatmapset_id not in beatmapsets and len(beatmaplist) < 15:
+            beatmapsets[beatmapset_id] = True
+            beatmaplist.append(beatmap)
+    print(f"Made 1 request")
+    return render(request, 'index.html', {'beatmaps': beatmaplist})
 
 def get_best_form(request):
     if request.method == 'POST':
@@ -57,11 +69,28 @@ def get_best_from(request, player):
         return render(request, 'get_best_from.html', {'scores': scores, 'profile': profile[0]})
     return render(request, 'get_best_from.html', {'player': player[0]})
 
+def compare_score_form(request):
+    if request.method == 'POST':
+        beatmapid = request.POST.get('beatmapid')
+        player1 = request.POST.get('player1')
+        player2 = request.POST.get('player2')
+        return redirect('compare_score', beatmapid=beatmapid, player1=player1, player2=player2)
+    else:
+        return render(request, 'compare_score.html')
+
 def compare_score(request, beatmapid, player1, player2):
-    if beatmapid is None:
-        beatmapid = 000000
-    if player1 is None:
-        player1 = "player1"
-    if player2 is None:
-        player2 = "player2"
-    return HttpResponse(f"Compare the score between {player1} and {player2} on the beatmap {beatmapid}.")
+    print("DEBUG")
+    print(beatmapid)
+    print(player1)
+    print(player2)
+    print("END DEBUG")
+    beatmap = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&b={beatmapid}")
+    score_p1 = requests.get(f"https://osu.ppy.sh/api/get_scores?k={APIKEY}&b={beatmapid}&u={player1}")
+    score_p2 = requests.get(f"https://osu.ppy.sh/api/get_scores?k={APIKEY}&b={beatmapid}&u={player2}")
+    if beatmap.status_code != 200 or score_p1.status_code != 200 or score_p2.status_code != 200:
+        print(f"{beatmapid} -> {beatmap.status_code} {score_p1.status_code} {score_p2.status_code}")
+        return HttpResponse("Erreur lors de la requête à l'API osu!")
+    print("Made 3 requests")
+    print(score_p1.json())
+    return render(request, 'compare_score.html', {'beatmap': beatmap.json()[0], 'score_p1': score_p1.json(), 'score_p2': score_p2.json()})
+
