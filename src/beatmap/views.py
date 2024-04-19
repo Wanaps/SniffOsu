@@ -19,13 +19,6 @@ def index(request):
     return render(request, 'beatmap/index.html')
 
 def get_best_form(request):
-    if request.method == 'POST':
-        beatmapid = request.POST.get('beatmapid')
-        return redirect('get_best', beatmapid=beatmapid)
-    else:
-        return render(request, 'beatmap/get_best.html')
-
-def get_best(request, beatmapid):
     beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
     beatmaps = beatmaps.json()
     beatmaps.reverse()
@@ -33,10 +26,29 @@ def get_best(request, beatmapid):
     beatmaplist = []
     for beatmap in beatmaps:
         beatmapset_id = beatmap['beatmapset_id']
-        if beatmapset_id not in beatmapsets and len(beatmaplist) < 15:
+        if beatmapset_id not in beatmapsets and len(beatmaplist) < 12:
             beatmapsets[beatmapset_id] = True
             beatmaplist.append(beatmap)
-    print(f"Made 1 request")
+    print(f"Made 1 request in GET BEST FORM")
+    if request.method == 'POST':
+        beatmapid = request.POST.get('beatmapid')
+        return redirect('get_best', beatmapid=beatmapid)
+    else:
+        return render(request, 'beatmap/get_best.html', {'beatmaps': beatmaplist})
+
+def get_best(request, beatmapid):
+    print("GET FUCKING BEST")
+    beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
+    beatmaps = beatmaps.json()
+    beatmaps.reverse()
+    beatmapsets = {}
+    beatmaplist = []
+    for beatmap in beatmaps:
+        beatmapset_id = beatmap['beatmapset_id']
+        if beatmapset_id not in beatmapsets and len(beatmaplist) < 12:
+            beatmapsets[beatmapset_id] = True
+            beatmaplist.append(beatmap)
+    print(f"Made 1 request in GET BEST")
     if beatmapid is not None:
         r1 = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&b={beatmapid}")
         r2 = requests.get(f"https://osu.ppy.sh/api/get_scores?k={APIKEY}&b={beatmapid}")

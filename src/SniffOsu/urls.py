@@ -18,8 +18,12 @@ from django.contrib import admin
 from django.urls import include
 from django.urls import path
 
+from . import views
+
 urlpatterns = [
     path('', views.index, name='index'),
     path('admin/', admin.site.urls),
     path('player/', include('player.urls')),
+    path('beatmap/', include('beatmap.urls')),
+    path('home/', include('home.urls')),
 ]

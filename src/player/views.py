@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
-from player.env import API_KEY
+from .env import API_KEY
 import requests
-import asyncio
 
 import logging
 logger = logging.getLogger("mylogger")
@@ -37,15 +36,23 @@ compare_dic = {
     "better_count_rank_a": "",
     "pp_country_rank": 0,
     "better_pp_country_rank": ""
-    }
+    }   
 
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'player/index.html')
 
 def compare_form(request):
-    return HttpResponse("Hello, world. You're at the COMPARE index.")
+    print("hallo! i am emu otori. emu is meaning SMILE")
+    if (request.method == 'POST'):
+        username = request.POST['player1']
+        username2 = request.POST['player2']
+        print("ya de la data")
+        compare_dic, user1, user2 = compare(username, username2)
+        return render(request, 'player/compare.html', {"username":username, "username2":username2, "compare_dic":compare_dic, "user1":user1, "user2":user2})
+    return render(request, 'player/compare.html')
 
-def compare(request, username, username2):
+def compare(username, username2):
+    print("LETS GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     data_user = user(username)[0]
     data_user2 = user(username2)[0]
     keys_int = ['count300', 'count100', 'count50', 'playcount', 'ranked_score', 'total_score', 'pp_rank',
@@ -79,7 +86,8 @@ def compare(request, username, username2):
         else:
             compare_dic[key] = round(data_user2[key] - data_user[key], 2)
             compare_dic['better_' + key] = data_user2['username']
-    return render(request, 'compare.html', {"compare_dic":compare_dic, "user1":data_user, "user2":data_user2})
+    print(compare_dic)
+    return compare_dic, data_user, data_user2
 
 
 def get_user(request, username: str):
@@ -92,7 +100,7 @@ def get_user(request, username: str):
     gur_response = get_user_recent_response.json()
     if not gur_response:
         gur_response = []
-    return render (request, 'profile.html', {"profile":user_profile[0], "best":gubr_response, "recent":gur_response, "user_id":user_profile[0]["user_id"]})
+    return render (request, 'player/profile.html', {"profile":user_profile[0], "best":gubr_response, "recent":gur_response, "user_id":user_profile[0]["user_id"]})
 
 
 def user(username: str):
