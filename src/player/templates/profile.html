@@ -5,6 +5,8 @@
 </head>
 <body>
     <h1>User Profile</h1>
+    <image src="http://s.ppy.sh/a/{{ user_id }}" alt="Avatar" /> 
+    <h2>{{ user_id }}</h2>
     <p>Welcome to your profile page!</p>
     {% for key, value in profile.items %}
         <h3>{{ key }}: {{ value }}</h3>
