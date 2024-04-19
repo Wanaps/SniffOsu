@@ -268,4 +268,5 @@ pyrightconfig.json
 .vscode/
 
 src/beatmap/env.py
+src/home/env.py
 .idea/
