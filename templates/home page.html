@@ -16,9 +16,9 @@
         .topbar {
             height: 100px;
             background-color: #292C33;
-            justify-content: center;
+            /* justify-content: center; */
             align-items: center;
-            display: flex;
+            /* display: flex; */
         }
 
         .navbar {
@@ -31,8 +31,8 @@
             margin: 20px auto;
             width: 80%;
             display: flex;
-            height: 80%;
             flex-direction: row-reverse;
+            height: 80%;
         }
 
         .centrale-haute {
@@ -42,6 +42,9 @@
             border: 1px solid white;
             margin-left: 20px;
             padding: 20px;
+            overflow-y: scroll;
+            max-height: 50%;
+            height: 50%;
         }
 
         .centrale-basse {
@@ -51,6 +54,9 @@
             border: 1px solid white;
             margin-left: 20px;
             padding: 20px;
+            overflow-y: scroll;
+            max-height: 50%;
+            height: 50%;
         }
 
         .user-info {
@@ -94,10 +100,11 @@
         .logo {
             display: flex;
             float: left;
-            height: 80%;
+            height: 60%;
             width: 10%;
             margin-right: 9%;
             margin-left: 1%;
+            margin-top: 1.5%;
         }
 
         .compensator {
@@ -107,17 +114,51 @@
             width: 10%;
             margin-left: 10%;
         }
+
+        .header {
+            background-color: #292C33;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+        }
+
+        /* .logo {
+            width: 105px;
+        } */
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            float: right;
+            margin-top: 2%;
+        }
+
+        .nav img {
+            width: 30px;
+            margin: 0 10px;
+    }
     </style>
+    
 </head>
 <body>
     <div class="topbar">
+        <div class="logo"><img src="../assets/sniffosu.png" alt="SniffOsu"></div>
+        <div class="nav"><img src="../assets/std.png" alt="Standard"><img src="../assets/taiko.png" alt="Taiko">
+            <img src="../assets/ctb.png" alt="Catch the Beat">
+            <img src="../assets/mania.png" alt="Mania">
+        </div>
+    </div>
+    <!-- 
         <div class="logo"><img src="../assets/sniffosu.png"></div>
         <div class="navbar"></div>
         <div class="compensator"></div>
-    </div>
+     -->
 
     <div class="container">
-            <div class="centrale-haute">Contenu de la div centrale<br>salade<br>tomate<br>caramel<br>frite<br>oui<br>proute<br></div>
+            <div class="centrale-haute">Contenu de la div centrale<br>architecture durable<br>salade<br>tomate<br>caramel<br>frite<br>oui<br>broute<br>fromage<br>oui<br>oui<br>oui<br>oui<br>oui<br>oui<br>oui<br>oui<br></div>
         </div>
     </div>
 </body>
