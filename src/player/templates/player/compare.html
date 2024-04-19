@@ -38,35 +38,6 @@
         </form>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    {% if username and username2 %}
-    <h1>Comparaison entre {{ username }} et {{ username2 }}</h1>
-    <script>
-        let compare_dic = {
-            {% for key, value in compare_dic.items %}
-                '{{ key }}': '{{ value }}',
-            {% endfor %}
-        };
-
-        let max_value = Math.max(...Object.values(compare_dic));
-
-        for (let key in compare_dic) {
-            if (!key.startsWith("better")) {
-                let percentage = (compare_dic[key] / max_value) * 100;
-                document.getElementById(key).style.width = percentage + '%';
-            }
-        }
-    </script>
-    {% for key, value in compare_dic.items %}
-        {% if not key.startswith("better") %}
-            <div class="progress-bar-container">
-                <span class="label">{{ key }}</span>
-                <div class="progress-bar" id="{{ key }}"></div>
-            </div>
-        {% endif %}
-    {% endfor %}
-{% endif %}
 
     
     <footer class="footer">
