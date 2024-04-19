@@ -16,14 +16,14 @@ def index(request):
             beatmapsets[beatmapset_id] = True
             beatmaplist.append(beatmap)
     print(f"Made 1 request")
-    return render(request, 'index.html', {'beatmaps': beatmaplist})
+    return render(request, 'beatmap/index.html', {'beatmaps': beatmaplist})
 
 def get_best_form(request):
     if request.method == 'POST':
         beatmapid = request.POST.get('beatmapid')
         return redirect('get_best', beatmapid=beatmapid)
     else:
-        return render(request, 'get_best.html')
+        return render(request, 'beatmap/get_best.html')
 
 def get_best(request, beatmapid):
     if beatmapid is not None:
@@ -34,15 +34,15 @@ def get_best(request, beatmapid):
             return HttpResponse("Erreur lors de la requête à l'API osu!")
         beatmap = r1.json()
         scores = r2.json()
-        return render(request, 'get_best.html', {'beatmap': beatmap[0], 'scores': scores})
-    return render(request, 'get_best.html', {'beatmapid': beatmapid})
+        return render(request, 'beatmap/get_best.html', {'beatmap': beatmap[0], 'scores': scores})
+    return render(request, 'beatmap/get_best.html', {'beatmapid': beatmapid})
 
 def get_best_from_form(request):
     if request.method == "POST":
         player = request.POST.get('playerid')
-        return redirect('get_best_from', player=player)
+        return redirect('beatmap/get_best_from', player=player)
     else:
-        return render(request, 'get_best_from.html')
+        return render(request, 'beatmap/get_best_from.html')
     
 def get_best_from(request, player):
     requestsnb = 0
@@ -66,17 +66,17 @@ def get_best_from(request, player):
                 return HttpResponse("Erreur lors de la requête à l'API osu!")
             score['beatmap'] = r.json()[0]
         print(f"{player} -> {requestsnb} requests")
-        return render(request, 'get_best_from.html', {'scores': scores, 'profile': profile[0]})
-    return render(request, 'get_best_from.html', {'player': player[0]})
+        return render(request, 'beatmap/get_best_from.html', {'scores': scores, 'profile': profile[0]})
+    return render(request, 'beatmap/get_best_from.html', {'player': player[0]})
 
 def compare_score_form(request):
     if request.method == 'POST':
         beatmapid = request.POST.get('beatmapid')
         player1 = request.POST.get('player1')
         player2 = request.POST.get('player2')
-        return redirect('compare_score', beatmapid=beatmapid, player1=player1, player2=player2)
+        return redirect('beatmap/compare_score', beatmapid=beatmapid, player1=player1, player2=player2)
     else:
-        return render(request, 'compare_score.html')
+        return render(request, 'beatmap/compare_score.html')
 
 def compare_score(request, beatmapid, player1, player2):
     print("DEBUG")
@@ -92,5 +92,4 @@ def compare_score(request, beatmapid, player1, player2):
         return HttpResponse("Erreur lors de la requête à l'API osu!")
     print("Made 3 requests")
     print(score_p1.json())
-    return render(request, 'compare_score.html', {'beatmap': beatmap.json()[0], 'score_p1': score_p1.json(), 'score_p2': score_p2.json()})
-
+    return render(request, 'beatmap/compare_score.html', {'beatmap': beatmap.json()[0], 'score_p1': score_p1.json(), 'score_p2': score_p2.json()})
