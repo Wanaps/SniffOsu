@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Get Best From</title>
+</head>
+<body>
+    {% if not profile %}
+    <h1>Get Best From</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="playerid">Player ID or Name:</label><br>
+        <input type="text" id="playerid" name="playerid"><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% elif profile and scores %}
+    <button onclick="window.location.href = '/beatmap/get_best_from';">Back</button>
+    <h2>Best scores from {{ profile.username }}</h2>
+    {% for score in scores %}
+    <h3>{{ forloop.counter }}. {{ score.beatmap.title }} by {{ score.beatmap.artist }} - {{ score.pp }}pp - {{ score.score }}</h3>
+    {% endfor%}
+    {% endif %}
+</body>
+</html>

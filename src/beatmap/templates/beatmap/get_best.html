@@ -1,0 +1,90 @@
+<!-- home.html -->
+
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>SniffOsu</title>
+    <link rel="stylesheet" href="{% static 'home/style.css' %}">
+</head>
+<body>
+    
+        <header class="header">
+            <div class="logo">
+                <img src="{% static 'home/logo.png' %}" alt="SniffOsu">
+            </div>
+            <div class="nav">
+                <img src="{% static 'beatmap/std.png' %}" alt="Standard">
+                <img src="{% static 'beatmap/taiko.png' %}" alt="Taiko">
+                <img src="{% static 'beatmap/ctb.png' %}" alt="Catch the Beat">
+                <img src="{% static 'beatmap/mania.png' %}" alt="Mania">
+            </div>
+        </header>
+    
+    <div class="container">
+        <h1>Bienvenue sur SniffOsu</h1>
+        <p>Sniffez vos stats, ou celles des autres.</p>
+    </div>
+    
+    <div class="search-buttons">
+        <button class="search-button" onclick="window.location.href = '/player';">Chercher un joueur</a>
+        <button class="search-button" onclick="window.location.href = '/compare';">Comparer deux joueurs</a>
+        <button class="search-button" onclick="window.location.href = '/beatmap/get_best';">Chercher un classement</a>
+    </div>
+
+
+    <h2>Dernières beatmaps ranked</h2>
+    <div class="beatmap-container">
+        {% if beatmaps %}
+            {% for beatmap in beatmaps %}
+            <div class="beatmap-card">
+                <a href="https://osu.ppy.sh/beatmapsets/{{ beatmap.beatmapset_id }}" target="_blank">
+                <img class="background-image" src="https://assets.ppy.sh/beatmaps/{{ beatmap.beatmapset_id }}/covers/cover.jpg" alt="Beatmap Cover">
+                <div class="map-info">
+                    <span class="map-name">{{ beatmap.title }}</span>
+                    <span class="map-artist">by {{ beatmap.artist }}</span>
+                    <span class="map-mapper">mapped by {{ beatmap.creator }}</span>
+                    <span class="map-date">
+                    <script>
+                        var date = new Date("{{ beatmap.approved_date }}");
+                        date = new Date(date.getTime() + (2 * 60 * 60 * 1000));
+                        var now = new Date();
+                        var diff = now - date;
+                        var seconds = Math.floor(diff / 1000);
+                        var minutes = Math.floor(seconds / 60);
+                        var hours = Math.floor(minutes / 60);
+                        var days = Math.floor(hours / 24);
+                        var months = Math.floor(days / 30);
+                        var years = Math.floor(months / 12);
+                        if (years > 0) {
+                            document.write(years + " years ago");
+                        } else if (months > 0) {
+                            document.write(months + " months ago");
+                        } else if (days > 0) {
+                            document.write(days + " days ago");
+                        } else if (hours > 0) {
+                            document.write(hours + " hours ago");
+                        } else if (minutes > 0) {
+                            document.write(minutes + " minutes ago");
+                        } else {
+                            document.write(seconds + " seconds ago");
+                        }
+                    </script>
+                    </span>
+                </div>
+            </a>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>Aucune beatmap trouvée</p>
+        {% endif %}
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2024 - SniffOsu</p>
+        </div>
+    </footer>
+
+</body>
+</html>

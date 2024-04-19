@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Compare Scores</title>
+</head>
+<body>
+    <h1>Compare Scores</h1>
+    {% if not beatmap or not score_p1 or not score_p2 %}
+    <form method="post">
+        {% csrf_token %}
+        <label for="player1">Player ID or Name:</label><br>
+        <input type="text" id="player1" name="player1"><br>
+        <label for="player2">Player ID or Name:</label><br>
+        <input type="text" id="player2" name="player2"><br>
+        <label for="beatmapid">Beatmap ID:</label><br>
+        <input type="text" id="beatmapid" name="beatmapid"><br>
+        <input type="submit" value="Submit">
+    </form>
+    {% elif beatmap and score_p1 and score_p2 %}
+    <h2>Beatmap: {{ beatmap.beatmap_id }} - {{ beatmap.title }} by {{ beatmap.artist }}</h2>
+    <h3>Player 1: {{ score_p1.username }} - {{ score_p1.score }} - {{ score_p1.rank }}</h3>
+    <h3>Player 2: {{ score_p2.username }} - {{ score_p2.score }} - {{ score_p2.rank }}</h3>
+    <h3>Comparison:</h3>
+    {% comment %} <p>Score difference: {{ score_p1.score - score_p2.score }}</p> {% endcomment %}
+    {% comment %} <p>Rank difference: {{ score_p1.rank - score_p2.rank }}</p> {% endcomment %}
+    {% comment %} <p>Player 1 has {{ score_p1.score - score_p2.score }} more points than Player 2.</p> {% endcomment %}
+    {% comment %} <p>Player 1 has {{ score_p1.rank - score_p2.rank }} higher rank than Player 2.</p> {% endcomment %}
+    {% endif %}
+</body>
+</html>
