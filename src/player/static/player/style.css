@@ -56,81 +56,95 @@ body {
     align-items: center;
 }
 
-.container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    text-align: center;
+.player-cards-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 20px;
 }
 
-.beatmap-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    row-gap: 10px;
-    margin-bottom: 50px;
-}
-
-.beatmap-card {
-    position: relative;
-    width: 365px;
-    height: 98px;
-    border-radius: 32px;
+.player-card1 {
+    width: 400px;
+    height: 700px;
+    border-radius: 20px;
     overflow: hidden;
-    cursor: pointer;
-    margin-bottom: 10px;
+    background-color: #292C33;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-left: 50px;
+    margin-top: 50px;
+    box-shadow: 0 0 0 4px #ad386d;
 }
 
-.background-image {
+.player-card2 {
+    width: 400px;
+    height: 700px;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #292C33;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-right: 100px;
+    margin-top: 50px;
+    box-shadow: 0 0 0 4px #ad386d;
+    text-align: right;
+}
+
+.profile-image {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.profile-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: blur(2.5px);
 }
 
-.map-info {
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    padding: 10px;
-    text-shadow: 4px 4px 6px rgba(0, 0, 0, 2);
+.player-info {
+    position: relative;
+    top: 20px;
+    left: 220px;
+    text-align: left;
     color: white;
-    font-size: 22px;
 }
 
-.map-mapper, .map-artist {
-    display: block;
+.player-info h2 {
+    margin: 10px 0;
+    font-size: 24px;
+    color: white;
+}
+
+.player-info p {
+    margin: 5px 0;
     font-size: 18px;
-}
-
-.map-mapper {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    padding: 10px;
     color: white;
-    font-size: 14px;
 }
 
-.map-artist {
-    display: block;
-    font-size: 12px;
-}
-
-.map-mapper {
-    display: block;
-    font-size: 12px;
-}
-
-.map-date {
+.lower-info p {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    padding: 10px;
+    left: 20px;
+    text-align: left;
     color: white;
-    font-size: 12px;
+}
+
+.info {
+    text-align: left;
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding-left: 10px; /* Espace à gauche du texte */
+    white-space: nowrap; /* Evite le retour à la ligne automatique */
+}
+
+.flag-icon {
+    margin: 5px 0;
+    margin-left: 5px;
+    font-size: 24px;
 }
 
 .footer {
@@ -158,6 +172,19 @@ body {
     justify-content: center;
     align-items: center;
     margin-top: 90px;
+}
+
+.comparaison-card {
+    width: 400px;
+    height: 200px;
+    border-radius: 20px;
+    overflow: hidden;
+    background-color: #292C33;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    margin-left: 50px;
+    margin-top: 50px;
+    box-shadow: 0 0 0 4px #ad386d;
 }
 
 .text-input {

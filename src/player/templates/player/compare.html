@@ -2,10 +2,12 @@
 
 <!DOCTYPE html>
 {% load static %}
+{% load humanize %}
 <html>
 <head>
     <title>SniffOsu</title>
     <link rel="stylesheet" href="{% static 'player/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.5.0/css/flag-icon.min.css">
 </head>
 <body>
     <header class="header">
@@ -26,6 +28,8 @@
         <button class="search-button" onclick="window.location.href = '/beatmap/get_best';">Chercher un classement</a>
     </div>
 
+
+    {% if not username and not username2 %}
     <div class="player-container">
         <h1>Comparer deux joueurs</h1>
         <form method="post">
@@ -37,8 +41,57 @@
             </div>
         </form>
     </div>
+    
+    {% else %}
+    <div class="player-cards-container">
+        <div class="player-card1">
+            <div class="profile-image">
+                <img src="http://s.ppy.sh/a/{{user1.user_id}}" alt="Profile Image">
+            </div>
+            <div class="player-info">
+                <h2>{{ user1.username }}</h2>
+                <p>Lvl {{ user1.level|floatformat:2 }}</p>
+                <span class="flag-icon flag-icon-{{ user1.country|lower }}"></span>
+                <p class="lower-info">{{ user1.pp_raw|floatformat:2 }}pp</p>
+                <p class="lower-info">{{ user1.accuracy|floatformat:2 }}%</p>
+            </div>
+            <h3 class="info">Nombre de 300s : {{ user1.count300|intcomma }}</h3>
+            <h3 class="info">Nombre de 100s : {{ user1.count100|intcomma }}</h3>
+            <h3 class="info">Nombre de 50s : {{ user1.count50|intcomma }}</h3>
+            <h3 class="info">Nombre de parties jouées : {{ user1.playcount|intcomma }}</h3>
+            <h3 class="info">Score total : {{ user1.total_score|intcomma }}</h3>
+            <h3 class="info">Nombre de SS : {{ user1.count_rank_ss|intcomma }}</h3>
+            <h3 class="info">Nombre de SS argentés : {{ user1.count_rank_ssh|intcomma }}</h3>
+            <h3 class="info">Nombre de S : {{ user1.count_rank_s|intcomma }}</h3>
+            <h3 class="info">Nombre de S argentés : {{ user1.count_rank_sh|intcomma }}</h3>
+            <h3 class="info">Nombre de A : {{ user1.count_rank_a|intcomma }}</h3>
+        </div>
 
 
+        <div class="player-card1">
+            <div class="profile-image">
+                <img src="http://s.ppy.sh/a/{{user2.user_id}}" alt="Profile Image">
+            </div>
+            <div class="player-info">
+                <h2>{{ user2.username }}</h2>
+                <p>Lvl {{ user2.level|floatformat:2 }}</p>
+                <span class="flag-icon flag-icon-{{ user2.country|lower }}"></span>
+                <p class="lower-info">{{ user2.pp_raw|floatformat:2 }}pp</p>
+                <p class="lower-info">{{ user2.accuracy|floatformat:2 }}%</p>
+            </div>
+            <h3 class="info">Nombre de 300s : {{ user2.count300|intcomma }}</h3>
+            <h3 class="info">Nombre de 100s : {{ user2.count100|intcomma }}</h3>
+            <h3 class="info">Nombre de 50s : {{ user2.count50|intcomma }}</h3>
+            <h3 class="info">Nombre de parties jouées : {{ user2.playcount|intcomma }}</h3>
+            <h3 class="info">Score total : {{ user2.total_score|intcomma }}</h3>
+            <h3 class="info">Nombre de SS : {{ user2.count_rank_ss|intcomma }}</h3>
+            <h3 class="info">Nombre de SS argentés : {{ user2.count_rank_ssh|intcomma }}</h3>
+            <h3 class="info">Nombre de S : {{ user2.count_rank_s|intcomma }}</h3>
+            <h3 class="info">Nombre de S argentés : {{ user2.count_rank_sh|intcomma }}</h3>
+            <h3 class="info">Nombre de A : {{ user2.count_rank_a|intcomma }}</h3>
+        </div>
+    </div>
+    {% endif %}
     
     <footer class="footer">
         <div class="footer-content">
