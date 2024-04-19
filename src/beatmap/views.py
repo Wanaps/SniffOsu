@@ -5,6 +5,27 @@ import requests
 from .env import APIKEY, SINCEDATE
 
 def index(request):
+    # beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
+    # beatmaps = beatmaps.json()
+    # beatmaps.reverse()
+    # beatmapsets = {}
+    # beatmaplist = []
+    # for beatmap in beatmaps:
+    #     beatmapset_id = beatmap['beatmapset_id']
+    #     if beatmapset_id not in beatmapsets and len(beatmaplist) < 15:
+    #         beatmapsets[beatmapset_id] = True
+    #         beatmaplist.append(beatmap)
+    # print(f"Made 1 request")
+    return render(request, 'beatmap/index.html')
+
+def get_best_form(request):
+    if request.method == 'POST':
+        beatmapid = request.POST.get('beatmapid')
+        return redirect('get_best', beatmapid=beatmapid)
+    else:
+        return render(request, 'beatmap/get_best.html')
+
+def get_best(request, beatmapid):
     beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
     beatmaps = beatmaps.json()
     beatmaps.reverse()
@@ -16,16 +37,6 @@ def index(request):
             beatmapsets[beatmapset_id] = True
             beatmaplist.append(beatmap)
     print(f"Made 1 request")
-    return render(request, 'beatmap/index.html', {'beatmaps': beatmaplist})
-
-def get_best_form(request):
-    if request.method == 'POST':
-        beatmapid = request.POST.get('beatmapid')
-        return redirect('get_best', beatmapid=beatmapid)
-    else:
-        return render(request, 'beatmap/get_best.html')
-
-def get_best(request, beatmapid):
     if beatmapid is not None:
         r1 = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&b={beatmapid}")
         r2 = requests.get(f"https://osu.ppy.sh/api/get_scores?k={APIKEY}&b={beatmapid}")
@@ -35,7 +46,7 @@ def get_best(request, beatmapid):
         beatmap = r1.json()
         scores = r2.json()
         return render(request, 'beatmap/get_best.html', {'beatmap': beatmap[0], 'scores': scores})
-    return render(request, 'beatmap/get_best.html', {'beatmapid': beatmapid})
+    return render(request, 'beatmap/get_best.html', {'beatmapid': beatmapid}, {'beatmaps': beatmaplist})
 
 def get_best_from_form(request):
     if request.method == "POST":
