@@ -90,7 +90,16 @@ def compare(username, username2):
     return compare_dic, data_user, data_user2
 
 
-def get_user(request, username: str):
+def profile_form(request):
+    if (request.method == 'POST'):
+        player = request.POST['player1']
+        print(get_user(player))
+        user_profile, user_best, user_recent, user_id = get_user(player)
+        return render(request, 'player/profile.html', {"user_profile":user_profile, "user_best":user_best, "user_recent":user_recent, "user_id":user_id, "player":player})
+    return render(request, 'player/profile.html')
+
+
+def get_user(username: str):
     user_profile = user(username)
     get_user_best_response = requests.get(f'https://osu.ppy.sh/api/get_user_best?k={API_KEY}&u={username}&limit=5')
     gubr_response = get_user_best_response.json()
@@ -100,7 +109,7 @@ def get_user(request, username: str):
     gur_response = get_user_recent_response.json()
     if not gur_response:
         gur_response = []
-    return render (request, 'player/profile.html', {"profile":user_profile[0], "best":gubr_response, "recent":gur_response, "user_id":user_profile[0]["user_id"]})
+    return user_profile[0], gubr_response, gur_response, user_profile[0]["user_id"]
 
 
 def user(username: str):
