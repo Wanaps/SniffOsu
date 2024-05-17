@@ -1,17 +1,15 @@
-<!-- home.html -->
-
 <!DOCTYPE html>
 {% load static %}
 <html>
 <head>
     <title>SniffOsu</title>
     <link rel="stylesheet" href="{% static 'home/style.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Bangla&display=swap">
 </head>
 <body>
-    
         <header class="header">
             <div class="logo">
-                <img src="{% static 'home/logo.png' %}" alt="SniffOsu">
+                <img src="{% static 'home/logo.png' %}" alt="SniffOsu" onclick="window.location.href = '/home';">
             </div>
             <div class="nav">
                 <img src="{% static 'home/std.png' %}" alt="Standard">
@@ -42,6 +40,21 @@
             <div class="map-info">
                 <span class="map-name">{{ beatmap.title }}</span>
                 <span class="map-artist">by {{ beatmap.artist }}</span>
+
+                {% comment %} ADD {% endcomment %}
+                <span class="map-mode">
+                    {% if beatmap.mode == "0" %}
+                        <img src="{% static 'home/std.png' %}" alt="Standard">
+                    {% elif beatmap.mode == "1" %}
+                        <img src="{% static 'home/taiko.png' %}" alt="Taiko">
+                    {% elif beatmap.mode == "2" %}
+                        <img src="{% static 'home/ctb.png' %}" alt="Catch the Beat">
+                    {% elif beatmap.mode == "3" %}
+                        <img src="{% static 'home/mania.png' %}" alt="Mania">
+                    {% endif %}
+                </span>
+                {% comment %} ENDADD {% endcomment %}
+
                 <span class="map-mapper">mapped by {{ beatmap.creator }}</span>
                 <span class="map-date">
                 <script>

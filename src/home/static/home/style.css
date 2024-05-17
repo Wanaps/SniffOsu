@@ -74,7 +74,7 @@ body {
 .beatmap-card {
     position: relative;
     width: 365px;
-    height: 98px;
+    height: 135px;
     border-radius: 32px;
     overflow: hidden;
     cursor: pointer;
@@ -97,41 +97,85 @@ body {
     padding: 10px;
     text-shadow: 4px 4px 6px rgba(0, 0, 0, 2);
     color: white;
-    font-size: 22px;
 }
+
+.map-name
+{
+    font-family: 'Anek Bangla', sans-serif;
+    font-size: 32px;
+    top: -5px;
+    display: block;
+    position: absolute;
+    overflow: auto;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.gamemodetest
+{
+    padding: 5px;
+    width: 45px;
+    right: 40px;
+    top: 0px;
+}
+
+.gamemode
+{
+    padding: 5px;
+    width: 45px;
+    top: 0px;
+    right: 15px;
+}
+
+.map-mode {
+    position: absolute;
+    display: block;
+    padding: 10px;
+    top: 0px;
+    right: 0px;
+}
+
+.map-mode img {
+    width: 35px;  /* Réglez la largeur selon vos besoins */
+    height: 35px;  /* Fixe la hauteur si nécessaire */
+    border-radius: 50%;  /* Rend l'image ronde */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);  /* Ajoute une ombre arrondie */
+    /* object-fit: cover;  Assure que l'image s'ajuste bien sans déformer */
+
+}
+
 
 .map-mapper, .map-artist {
     display: block;
+    font-family: 'Anek Bangla', sans-serif;
     font-size: 18px;
+}
+
+.map-artist {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    padding: 10px;
+    color: white;
+    font-size: 16px;
 }
 
 .map-mapper {
     position: absolute;
-    bottom: 0;
+    bottom: 0px;
+    right: 15px;
+    padding: 5px;
     right: 0;
-    padding: 10px;
     color: white;
-    font-size: 14px;
-}
-
-.map-artist {
-    display: block;
-    font-size: 12px;
-}
-
-.map-mapper {
-    display: block;
-    font-size: 12px;
 }
 
 .map-date {
     position: absolute;
-    bottom: 0;
-    left: 0;
+    bottom: 18px;
+    right: 0px;
     padding: 10px;
     color: white;
-    font-size: 12px;
-
+    font-size: 14px;
 }
 
 .footer {
