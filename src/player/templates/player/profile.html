@@ -1,27 +1,93 @@
 <!DOCTYPE html>
+{% load static %}
 <html>
 <head>
-    <title>User Profile</title>
+    <title>SniffOsu</title>
+    <link rel="stylesheet" href="{% static 'player/style.css' %}">
 </head>
 <body>
-    <h1>User Profile</h1>
-    <image src="http://s.ppy.sh/a/{{ user_id }}" alt="Avatar" /> 
-    <h2>{{ user_id }}</h2>
-    <p>Welcome to your profile page!</p>
-    {% for key, value in profile.items %}
-        <h3>{{ key }}: {{ value }}</h3>
-    {% endfor %}
-    <h2>Best</h2>
-    {% for map in best%}
-        {% for key, value in map.items %}
-            <h3>{{ key }}: {{ value }}</h3>
+    <header class="header">
+        <div class="logo">
+            <img src="{% static 'home/logo.png' %}" alt="SniffOsu">
+        </div>
+        <div class="nav">
+            <img src="{% static 'home/std.png' %}" alt="Standard">
+            <img src="{% static 'home/taiko.png' %}" alt="Taiko">
+            <img src="{% static 'home/ctb.png' %}" alt="Catch the Beat">
+            <img src="{% static 'home/mania.png' %}" alt="Mania">
+        </div>
+    </header>
+    
+    <div class="search-buttons">
+        <button class="search-button" onclick="window.location.href = '/player';">Chercher un joueur</a>
+        <button class="search-button" onclick="window.location.href = '/player/compare';">Comparer deux joueurs</a>
+        <button class="search-button" onclick="window.location.href = '/beatmap/get_best';">Chercher un classement</a>
+    </div>
+
+    <div class="player-container">
+        <h1>Rechercher un joueur</h1>
+        <form method="post">
+            {% csrf_token %}
+            <input class="text-input" type="text" name="player1" placeholder="Pseudo du joueur">
+            <div>
+                <button class="send-button" type="submit">Rechercher</button>
+            </div>
+        </form>
+    </div>
+    {% if player %}
+    <div class="player-cards-container">
+        <div class="player-card1">
+            <div class="profile-image">
+                <img src="http://s.ppy.sh/a/{{ user_id }}" alt="Profile Image">
+            </div>
+            <div class="player-info">
+                <h2>{{ user_profile.username }}</h2>
+                <p>Lvl {{ user_profile.level|floatformat:2 }}</p>
+                <p>Join Date {{ user_profile.join_date }}</p>
+                <p class="lower-info">Ranked Score: {{ user_profile.ranked_score }}</p>
+                <p class="lower-info">Ranked Country Score: {{ user_profile.pp_country_rank }}</p>
+                <p class="lower-info">{{ user_profile.pp_raw|floatformat:2 }}pp</p>
+                <p class="lower-info">SS: {{ user_profile.count_rank_ss }}</p>
+                <p class="lower-info">SSH: {{ user_profile.count_rank_ssh }}</p>
+                <p class="lower-info">S: {{ user_profile.count_rank_s }}</p>
+                <p class="lower-info">SH: {{ user_profile.count_rank_sh }}</p>
+                <p class="lower-info">A: {{ user_profile.count_rank_a }}</p>
+                <p class="lower-info">Time played: {{ user_profile.total_seconds_played }}m</p>
+            </div>
+            <div class="player-stats">
+                <p class="lower-info">Count 300: {{ user_profile.count300 }}</p>
+                <p class="lower-info">Count 100: {{ user_profile.count100 }}</p>
+                <p class="lower-info">Count 50: {{ user_profile.count50 }}</p>
+                <p class="lower-info">Total Score: {{ user_profile.total_score }}</p>
+                <p class="lower-info">Playcount: {{ user_profile.pp_rank }}</p>
+                <p class="lower-info">Ranked Playcount: {{ user_profile.accuracy|floatformat:2 }}%</p>
+            </div>
+        </div>
+    </div>
+    <h1>Best</h1>
+    <div class="beatmap-container">
+        {% for best in user_best %}
+        <div class="beatmap-card">
+            <a href="https://osu.ppy.sh/beatmaps/{{ best.beatmap_id }}" target="_blank">
+            <img class="background-image" src="https://b.ppy.sh/thumb/{{best.beatmap_id}}l.jpg" alt="Beatmap Cover">
+            <div class="map-info">
+                <span class="map-name">Score {{ best.score }}</span>
+                <span class="map-artist">Maxcombo {{ best.maxcombo }}</span>
+                <span class="map-mapper">Rank {{ best.rank }}</span>
+                <span class="map-date">{{ best.date }}</span>
+            </div>
+        </a>
+        </div>
         {% endfor %}
-    {% endfor %}
-    <h2>Recent</h2>
-    {% for map in recent %}
-        {% for key, value in map.items %}
-            <h3>{{ key }}: {{ value }}</h3>
-        {% endfor %}
-    {% endfor %}
+    </div>
+    {% endif %}
+
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <p>© 2024 - SniffOsu</p>
+        </div>
+    </footer>
+
 </body>
 </html>

@@ -1,0 +1,12 @@
+version: "3.8"
+services:
+  SniffOsu:
+    container_name: SniffOsu
+    image: sniffosu
+    restart: always
+    ports:
+        - "9000:9000"
+    volumes:
+        - .:/SniffOsu/
+    environment:
+      - TZ=Europe/Paris
