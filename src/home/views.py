@@ -1,8 +1,13 @@
+from os import getenv
 from django.shortcuts import render
 from django.http import HttpResponse
-
+from dotenv import load_dotenv
 import requests
-from .env import APIKEY, SINCEDATE
+from datetime import datetime, timedelta
+
+load_dotenv()
+APIKEY = getenv("APIKEY")
+SINCEDATE = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
 
 def home(request):
@@ -16,6 +21,5 @@ def home(request):
         if beatmapset_id not in beatmapsets and len(beatmaplist) < 12:
             beatmapsets[beatmapset_id] = True
             beatmaplist.append(beatmap)
-    print(f"Made 1 request")
     return render(request, 'index.html', {'beatmaps': beatmaplist})
 

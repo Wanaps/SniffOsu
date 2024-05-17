@@ -1,11 +1,13 @@
+import os
 from django.shortcuts import render
 from django.http import HttpResponse
-from .env import API_KEY
+from dotenv import load_dotenv
 import requests
 
-import logging
-logger = logging.getLogger("mylogger")
-logger.info("Whatever to log")
+load_dotenv()
+
+APIKEY = os.getenv("APIKEY")
+
 
 compare_dic = {
     "count300": 0,
@@ -42,17 +44,14 @@ def index(request):
     return render(request, 'player/index.html')
 
 def compare_form(request):
-    print("hallo! i am emu otori. emu is meaning SMILE")
     if (request.method == 'POST'):
         username = request.POST['player1']
         username2 = request.POST['player2']
-        print("ya de la data")
         compare_dic, user1, user2 = compare(username, username2)
         return render(request, 'player/compare.html', {"username":username, "username2":username2, "compare_dic":compare_dic, "user1":user1, "user2":user2})
     return render(request, 'player/compare.html')
 
 def compare(username, username2):
-    print("LETS GOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
     data_user = user(username)[0]
     data_user2 = user(username2)[0]
     keys_int = ['count300', 'count100', 'count50', 'playcount', 'ranked_score', 'total_score', 'pp_rank',
@@ -86,14 +85,12 @@ def compare(username, username2):
         else:
             compare_dic[key] = round(data_user2[key] - data_user[key], 2)
             compare_dic['better_' + key] = data_user2['username']
-    print(compare_dic)
     return compare_dic, data_user, data_user2
 
 
 def profile_form(request):
     if (request.method == 'POST'):
         player = request.POST['player1']
-        print(get_user(player))
         user_profile, user_best, user_recent, user_id = get_user(player)
         return render(request, 'player/profile.html', {"user_profile":user_profile, "user_best":user_best, "user_recent":user_recent, "user_id":user_id, "player":player})
     return render(request, 'player/profile.html')
@@ -101,11 +98,11 @@ def profile_form(request):
 
 def get_user(username: str):
     user_profile = user(username)
-    get_user_best_response = requests.get(f'https://osu.ppy.sh/api/get_user_best?k={API_KEY}&u={username}&limit=5')
+    get_user_best_response = requests.get(f'https://osu.ppy.sh/api/get_user_best?k={APIKEY}&u={username}&limit=5')
     gubr_response = get_user_best_response.json()
     if not gubr_response:
         return HttpResponse("User not found")
-    get_user_recent_response = requests.get(f'https://osu.ppy.sh/api/get_user_recent?k={API_KEY}&u={username}&limit=5')
+    get_user_recent_response = requests.get(f'https://osu.ppy.sh/api/get_user_recent?k={APIKEY}&u={username}&limit=5')
     gur_response = get_user_recent_response.json()
     if not gur_response:
         gur_response = []
@@ -113,7 +110,7 @@ def get_user(username: str):
 
 
 def user(username: str):
-    get_user_response = requests.get(f'https://osu.ppy.sh/api/get_user?k={API_KEY}&u={username}')
+    get_user_response = requests.get(f'https://osu.ppy.sh/api/get_user?k={APIKEY}&u={username}')
     gur_response = get_user_response.json()
     if not gur_response:
         return HttpResponse("User not found")

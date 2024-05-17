@@ -1,8 +1,14 @@
+import os
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
+from dotenv import load_dotenv
+from datetime import datetime, timedelta
 
 import requests
-from .env import APIKEY, SINCEDATE
+
+load_dotenv()
+APIKEY = os.getenv('APIKEY')
+SINCEDATE = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
 
 def index(request):
     # beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
@@ -15,7 +21,6 @@ def index(request):
     #     if beatmapset_id not in beatmapsets and len(beatmaplist) < 15:
     #         beatmapsets[beatmapset_id] = True
     #         beatmaplist.append(beatmap)
-    # print(f"Made 1 request")
     return render(request, 'beatmap/index.html')
 
 def get_best_form(request):
@@ -29,7 +34,6 @@ def get_best_form(request):
         if beatmapset_id not in beatmapsets and len(beatmaplist) < 12:
             beatmapsets[beatmapset_id] = True
             beatmaplist.append(beatmap)
-    print(f"Made 1 request in GET BEST FORM")
     if request.method == 'POST':
         beatmapid = request.POST.get('beatmapid')
         return redirect('get_best', beatmapid=beatmapid)
@@ -37,7 +41,6 @@ def get_best_form(request):
         return render(request, 'beatmap/get_best.html', {'beatmaps': beatmaplist})
 
 def get_best(request, beatmapid):
-    print("GET FUCKING BEST")
     beatmaps = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&since={SINCEDATE}")
     beatmaps = beatmaps.json()
     beatmaps.reverse()
@@ -48,11 +51,9 @@ def get_best(request, beatmapid):
         if beatmapset_id not in beatmapsets and len(beatmaplist) < 12:
             beatmapsets[beatmapset_id] = True
             beatmaplist.append(beatmap)
-    print(f"Made 1 request in GET BEST")
     if beatmapid is not None:
         r1 = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&b={beatmapid}")
         r2 = requests.get(f"https://osu.ppy.sh/api/get_scores?k={APIKEY}&b={beatmapid}")
-        print(f"{beatmapid} -> {r1.status_code} {r2.status_code}")
         if r1.status_code != 200 or r2.status_code != 200:
             return HttpResponse("Erreur lors de la requête à l'API osu!")
         beatmap = r1.json()
@@ -88,7 +89,6 @@ def get_best_from(request, player):
             if r.status_code != 200:
                 return HttpResponse("Erreur lors de la requête à l'API osu!")
             score['beatmap'] = r.json()[0]
-        print(f"{player} -> {requestsnb} requests")
         return render(request, 'beatmap/get_best_from.html', {'scores': scores, 'profile': profile[0]})
     return render(request, 'beatmap/get_best_from.html', {'player': player[0]})
 
@@ -102,17 +102,9 @@ def compare_score_form(request):
         return render(request, 'beatmap/compare_score.html')
 
 def compare_score(request, beatmapid, player1, player2):
-    print("DEBUG")
-    print(beatmapid)
-    print(player1)
-    print(player2)
-    print("END DEBUG")
     beatmap = requests.get(f"https://osu.ppy.sh/api/get_beatmaps?k={APIKEY}&b={beatmapid}")
     score_p1 = requests.get(f"https://osu.ppy.sh/api/get_scores?k={APIKEY}&b={beatmapid}&u={player1}")
     score_p2 = requests.get(f"https://osu.ppy.sh/api/get_scores?k={APIKEY}&b={beatmapid}&u={player2}")
     if beatmap.status_code != 200 or score_p1.status_code != 200 or score_p2.status_code != 200:
-        print(f"{beatmapid} -> {beatmap.status_code} {score_p1.status_code} {score_p2.status_code}")
         return HttpResponse("Erreur lors de la requête à l'API osu!")
-    print("Made 3 requests")
-    print(score_p1.json())
     return render(request, 'beatmap/compare_score.html', {'beatmap': beatmap.json()[0], 'score_p1': score_p1.json(), 'score_p2': score_p2.json()})
