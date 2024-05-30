@@ -35,19 +35,43 @@ body {
 }
 
 .search-button {
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
     background-color: #292C33;
+    box-shadow: 0 0 0 4px #ad386d;
+    border-radius: 5px;
     color: white;
+    border: none;
     height: 40px;
     width: 260px;
-    border: none;
     padding: 10px 20px;
-    border-radius: 5px;
     cursor: pointer;
-    box-shadow: 0 0 0 4px #ad386d;
     margin: 0 15px;
-    text-align: center;
     font-size: 14px;
     font-weight: bold;
+}
+
+@media (max-width: 1200px) {
+    .search-button {
+        width: 200px;
+        height: 35px;
+    }
+}
+
+@media (max-width: 900px) {
+    .search-button {
+        width: 150px;
+        height: 55px;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-button {
+        width: 100px;
+        height: 75px;
+    }
 }
 
 .latest {
@@ -71,9 +95,35 @@ body {
     margin-bottom: 50px;
 }
 
+.beatmap-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    row-gap: 10px;
+    margin-bottom: 50px;
+}
+
+@media (max-width: 1200px) {
+    .beatmap-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .beatmap-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .beatmap-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 .beatmap-card {
     position: relative;
-    width: 365px;
+    width: 100%;
     height: 135px;
     border-radius: 32px;
     overflow: hidden;
@@ -99,28 +149,20 @@ body {
     color: white;
 }
 
-.map-name
-{
+.map-name {
     font-family: 'Anek Bangla', sans-serif;
     font-size: 32px;
     top: -5px;
+    left: 10px;
+    right: 55px;
     display: block;
     position: absolute;
-    overflow: auto;
+    overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
 
-.gamemodetest
-{
-    padding: 5px;
-    width: 45px;
-    right: 40px;
-    top: 0px;
-}
-
-.gamemode
-{
+.gamemode {
     padding: 5px;
     width: 45px;
     top: 0px;
@@ -136,14 +178,11 @@ body {
 }
 
 .map-mode img {
-    width: 35px;  /* Réglez la largeur selon vos besoins */
-    height: 35px;  /* Fixe la hauteur si nécessaire */
-    border-radius: 50%;  /* Rend l'image ronde */
-    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);  /* Ajoute une ombre arrondie */
-    /* object-fit: cover;  Assure que l'image s'ajuste bien sans déformer */
-
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 }
-
 
 .map-mapper, .map-artist {
     display: block;
@@ -153,30 +192,32 @@ body {
 
 .map-artist {
     position: absolute;
-    top: 25px;
+    top: 28px;
     left: 0;
+    right: 50px;
     padding: 10px;
     color: white;
     font-size: 16px;
+    line-height: 1.2;
 }
 
 .map-mapper {
     position: absolute;
     bottom: 0px;
-    right: 15px;
+    right: 2px;
     padding: 5px;
-    right: 0;
     color: white;
 }
 
 .map-date {
     position: absolute;
-    bottom: 18px;
-    right: 0px;
+    bottom: 20px;
+    right: 2px;
     padding: 10px;
     color: white;
     font-size: 14px;
 }
+
 
 .footer {
     background-color: #292C33;
